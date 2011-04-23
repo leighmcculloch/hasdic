@@ -1,0 +1,16 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Release|x86" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="hasdic/Main_Create.cs">
+    <Files>
+      <File FileName="hasdic/Main.cs" Line="36" Column="69" />
+      <File FileName="hasdic/Main_Create.cs" Line="71" Column="23" />
+      <File FileName="hasdic/hdFileSqlite.cs" Line="43" Column="66" />
+      <File FileName="hasdic/Main_Search.cs" Line="39" Column="19" />
+      <File FileName="hasdic/hdRecord.cs" Line="125" Column="26" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
