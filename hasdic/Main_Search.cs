@@ -16,6 +16,13 @@ namespace hasdic
 				return;
 			}
 			
+			int dataLength = 0;
+			try
+			{
+				dataLength = int.Parse(options["--length"]);
+			}
+			catch { }
+			
 			file.RecordFound += delegate(hdRecord record)
 			{
 				Console.Write(record.ToString());
@@ -36,7 +43,7 @@ namespace hasdic
 			Console.WriteLine("Matches: ");
 			
 			DateTime dtStart = DateTime.Now;
-			file.FindRecords(hdRecord.ByteArrayFromString(hash));
+			file.FindRecords(hdRecord.ByteArrayFromString(hash), dataLength);
 			DateTime dtFinish = DateTime.Now;
 			TimeSpan searchTime = dtFinish.Subtract(dtStart);
 			

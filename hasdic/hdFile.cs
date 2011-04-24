@@ -16,6 +16,7 @@ namespace hasdic
 		#region finding records
 		event hdFileRecordFoundEvent RecordFound;
 		hdRecord[] FindRecords(byte[] hash);
+		hdRecord[] FindRecords(byte[] hash, int dataLength);
 		#endregion
 		
 		#region get last record

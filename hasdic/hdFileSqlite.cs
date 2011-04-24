@@ -10,6 +10,7 @@ namespace hasdic
 		private SqliteTransaction transaction = null;
 		private SqliteCommand appendCommand = null;
 		private SqliteCommand findHashCommand = null;
+		private SqliteCommand findHashWithLengthCommand = null;
 		private SqliteCommand getLastCommand = null;
 		public event hdFileRecordFoundEvent RecordFound;
 		
@@ -41,6 +42,14 @@ namespace hasdic
 			this.findHashCommand.CommandText = "SELECT * FROM dictionary WHERE hash_md5 = @hash"
 																		+ " OR hash_sha1 = @hash";
 			this.findHashCommand.Parameters.Add(new SqliteParameter("@hash"));
+			
+			// setup the find hash command and it's parameters
+			this.findHashWithLengthCommand = this.connection.CreateCommand();
+			this.findHashWithLengthCommand.CommandText = "SELECT * FROM dictionary WHERE length(data) == @dataLength"
+																				+ " AND (hash_md5 = @hash"
+																				+ " OR hash_sha1 = @hash)";
+			this.findHashWithLengthCommand.Parameters.Add(new SqliteParameter("@dataLength"));
+			this.findHashWithLengthCommand.Parameters.Add(new SqliteParameter("@hash"));
 			
 			// setup the get last record command
 			this.getLastCommand = this.connection.CreateCommand();
@@ -77,13 +86,32 @@ namespace hasdic
 		
 		public hdRecord[] FindRecords(byte[] hash)
 		{
+			return FindRecords(hash, 0);
+		}
+		
+		public hdRecord[] FindRecords(byte[] hash, int dataLength)
+		{
 			AppendClose();
 			
-			// set the values for the parameters
-			this.findHashCommand.Parameters[0].Value = hash;
+			SqliteDataReader reader;
 			
-			// execute the find hash command
-			SqliteDataReader reader = this.findHashCommand.ExecuteReader();
+			if(dataLength > 0)
+			{
+				// set the values for the parameters
+				this.findHashWithLengthCommand.Parameters[0].Value = dataLength;
+				this.findHashWithLengthCommand.Parameters[1].Value = hash;
+				
+				// execute the find hash command
+				reader = this.findHashWithLengthCommand.ExecuteReader();
+			}
+			else
+			{
+				// set the values for the parameters
+				this.findHashCommand.Parameters[0].Value = hash;
+				
+				// execute the find hash command
+				reader = this.findHashCommand.ExecuteReader();
+			}
 			
 			// read each record that matches and store and trigger the event for it
 			List<hdRecord> matches = new List<hdRecord>();
